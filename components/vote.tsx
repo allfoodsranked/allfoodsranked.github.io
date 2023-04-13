@@ -40,7 +40,7 @@ export const Vote = () => {
     regenSeed()
   }
 
-  if (!foods) return null;
+  if (!foods) return null;  
 
   const first = foods[randomSeed]
   const second = foods[randomSeed + 1 > foods.length ? randomSeed -1 : randomSeed + 1]
