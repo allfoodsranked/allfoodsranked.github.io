@@ -4,16 +4,22 @@ import type { NextPage } from 'next';
 import { useSession } from '../auth/auth-context';
 import { LoginForm } from '../auth/login';
 import { Vote } from '../components/vote';
-import { RequireAuth } from '../auth/with-auth';
 
-const Home: NextPage = () => {
+const Login: NextPage = () => {
   const session = useSession();
+
+  if (!session)
+    return (
+      <div>
+        <LoginForm />
+      </div>
+    );
 
   return (
     <div className="grid grid-cols-1">
       <Vote />
     </div>
   );
-}
+};
 
-export default RequireAuth(Home);
+export default Login;

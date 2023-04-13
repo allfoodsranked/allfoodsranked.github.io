@@ -27,7 +27,10 @@ export function AuthContextProvider({
 }
 
 export function useSession() {
-  const auth = useContext(AuthContext);
-  console.log(auth);
-  return auth.session;
+  try {
+    const auth = useContext(AuthContext);
+    return auth.session;
+  } catch(e) {
+    return null;
+  }
 }
