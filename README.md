@@ -5,9 +5,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
+```
+
+## Generate Schema
+
+```bash
+npx supabase login
+npm run generate:schema
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:schema": "npx openapi-typescript https://dcregyoefidrxbuxttnf.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjcmVneW9lZmlkcnhidXh0dG5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODE0MTI0OTMsImV4cCI6MTk5Njk4ODQ5M30.NbGaDuGHLjLTfctv4IPtTWmEZRC_UOKJMIrgIFOdyxw --output types/supabase.ts"
+    "generate:schema": "npx supabase gen types typescript --project-id 'dcregyoefidrxbuxttnf' --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.20.0",
