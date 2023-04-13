@@ -74,7 +74,14 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_rankings: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          votes: number
+          users: number
+          name: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
