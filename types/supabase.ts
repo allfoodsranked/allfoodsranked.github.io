@@ -71,7 +71,13 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      rankings: {
+        Row: {
+          name: string | null
+          users: number | null
+          votes: number | null
+        }
+      }
     }
     Functions: {
       get_rankings: {

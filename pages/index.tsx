@@ -4,29 +4,33 @@ import { Vote } from '../components/vote';
 import { RequireAuth } from '../auth/with-auth';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../db/client';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   const query = useQuery(['rankings'], async () => {
-    const data = await supabase.rpc('get_rankings')
+    const data = await supabase.from('rankings').select('*')
     return data;
   })
   const rankings = query.data?.data ?? []
   return (
-    <RequireAuth>
-      <div className="grid grid-cols-12">
-        <div className='col-span-1'>
-          <h1>Top Foods</h1>
+    <>
+      <h1 className='text-4xl'>ALL FOODS RANKED</h1>
+      <div className="grid grid-cols-1 text-center">
+        <div className="my-4">
+          <h2>Top Foods</h2>
           <ol>
             {rankings.slice(0, 10).map((v, index) => (
               <li key={v.name}>{index+1}. {v.name}</li>
             ))}
           </ol>
         </div>
-      <div className='col-span-10'>
-        <Vote />
+      <Link 
+        href="/vote"
+      >
+        VOTE HERE
+      </Link>
       </div>
-      </div>
-    </RequireAuth>
+    </>
   );
 }
 
