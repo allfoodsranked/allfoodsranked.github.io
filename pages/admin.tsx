@@ -1,6 +1,4 @@
 import type { NextPage } from 'next';
-import { useSession } from '../auth/auth-context';
-import { Vote } from '../components/vote';
 import { RequireAuth } from '../auth/with-auth';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../db/client';
@@ -12,23 +10,32 @@ const Home: NextPage = () => {
     return await supabase.from('foods').select('*');
   });
   const foodList = foods.data?.data ?? [];
+
   const catQuery = useQuery(['categories'], async () => {
     return await supabase.from('categories').select('*');
   });
   const categories = catQuery.data?.data ?? [];
-  const membersQuery = useQuery(['categorymembers'], async () => {
-    return await supabase.from('category_foods').select('*');
-  });
-  const members = membersQuery.data?.data ?? [];
+
   const [form, setForm] = useState<{ [key: string]: string }>({});
   const selectedCategoryId = form['category'] ?? categories?.[0]?.id;
-  const currentMembers = members.filter(
-    (m) => m.category === selectedCategoryId
+  const membersQuery = useQuery(
+    ['category-members', selectedCategoryId],
+    async () => {
+      return await supabase
+        .from('category_foods')
+        .select('food_id')
+        .eq('category_id', selectedCategoryId);
+    }
   );
+
+  const currentMembers =
+    membersQuery.data?.data?.map(({ food_id }) => food_id) ?? [];
   const [newMembers, setMembers] = useState<number[]>([]);
 
   const updateForm: ChangeEventHandler = (e) =>
-    setForm({ [e.target.name]: e.target.value });
+    // TODO: fix the type here and be more explicit
+    setForm((f) => ({ ...f, [e.target.name]: (e.target as any).value }));
+
   return (
     <RequireAuth>
       <div className="mx-4 my-6">
@@ -129,7 +136,12 @@ const Home: NextPage = () => {
                           }
                         }}
                         placeholder={foodItem.name}
-                        checked={newMembers.includes(foodItem.id)}
+                        // todo: support removing from category via UI
+                        disabled={currentMembers.includes(foodItem.id)}
+                        checked={
+                          newMembers.includes(foodItem.id) ||
+                          currentMembers.includes(foodItem.id)
+                        }
                       />
                       <label htmlFor={foodItem.name}>{foodItem.name}</label>
                     </li>
