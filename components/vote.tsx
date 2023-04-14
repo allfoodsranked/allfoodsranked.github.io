@@ -27,7 +27,7 @@ export const Vote = ({
   );
 
   const [randomSeed, regenSeed] = useReducer(
-    () => (foods ? Math.round(Math.random() * foods.length) : 0),
+    () => (foods ? Math.round(Math.random() * (foods.length - 1)) : 0),
     0
   );
 
