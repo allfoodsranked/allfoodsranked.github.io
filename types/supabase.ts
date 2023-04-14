@@ -26,6 +26,23 @@ export interface Database {
           name?: string | null
         }
       }
+      category_tags: {
+        Row: {
+          category_id: number
+          created_at: string | null
+          food_id: number | null
+        }
+        Insert: {
+          category_id?: number
+          created_at?: string | null
+          food_id?: number | null
+        }
+        Update: {
+          category_id?: number
+          created_at?: string | null
+          food_id?: number | null
+        }
+      }
       foods: {
         Row: {
           created_at: string
@@ -71,6 +88,14 @@ export interface Database {
       }
     }
     Views: {
+      category_foods: {
+        Row: {
+          category: string | null
+          category_id: number | null
+          food_id: number | null
+          name: string | null
+        }
+      }
       rankings: {
         Row: {
           name: string | null
