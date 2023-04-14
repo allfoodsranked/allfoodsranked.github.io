@@ -13,17 +13,17 @@ export interface Database {
         Row: {
           created_at: string | null
           id: number
-          name: string | null
+          name: string
         }
         Insert: {
           created_at?: string | null
           id?: number
-          name?: string | null
+          name: string
         }
         Update: {
           created_at?: string | null
           id?: number
-          name?: string | null
+          name?: string
         }
       }
       category_tags: {
@@ -31,16 +31,19 @@ export interface Database {
           category_id: number
           created_at: string | null
           food_id: number | null
+          id: number
         }
         Insert: {
           category_id?: number
           created_at?: string | null
           food_id?: number | null
+          id?: number
         }
         Update: {
           category_id?: number
           created_at?: string | null
           food_id?: number | null
+          id?: number
         }
       }
       foods: {
@@ -69,21 +72,21 @@ export interface Database {
           food_id: number | null
           id: number
           user_id: string
-          value: number | null
+          value: number
         }
         Insert: {
           created_at?: string | null
           food_id?: number | null
           id?: number
           user_id: string
-          value?: number | null
+          value?: number
         }
         Update: {
           created_at?: string | null
           food_id?: number | null
           id?: number
           user_id?: string
-          value?: number | null
+          value?: number
         }
       }
     }
@@ -96,8 +99,19 @@ export interface Database {
           name: string | null
         }
       }
+      category_rankings: {
+        Row: {
+          category: string | null
+          category_id: number | null
+          food_id: number | null
+          name: string | null
+          users: number | null
+          votes: number | null
+        }
+      }
       rankings: {
         Row: {
+          food_id: number | null
           name: string | null
           users: number | null
           votes: number | null
