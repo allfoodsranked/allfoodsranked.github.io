@@ -45,7 +45,10 @@ const Home: NextPage = () => {
 
   const updateForm: ChangeEventHandler = (e) =>
     // TODO: fix the type here and be more explicit
-    setForm((f) => ({ ...f, [e.target.name]: (e.target as any).value }));
+    setForm((f) => ({
+      ...f,
+      [(e.target as any).name]: (e.target as any).value,
+    }));
 
   return (
     <RequireAuth>
