@@ -1,7 +1,4 @@
 import type { NextPage } from 'next';
-import { useSession } from '../auth/auth-context';
-import { Vote } from '../components/vote';
-import { RequireAuth } from '../auth/with-auth';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../db/client';
 import Link from 'next/link';
@@ -45,17 +42,23 @@ const Home: NextPage = () => {
     <>
       <div className="flex justify-between items-center mx-3">
         <h1 className="text-4xl">ALL FOODS RANKED</h1>
-        <Link href="/vote">VOTE HERE</Link>
       </div>
       <div className="grid grid-cols-1 text-center">
         <div className="my-4 grid grid-cols-4">
-          <Ranking header="Top Ranked Overall" rankings={rankings} />
+          <div>
+            <Ranking header="Top Ranked Overall" rankings={rankings} />
+            <Link href="/vote">Vote</Link>
+          </div>
           {Object.keys(rankingsByCategory).map((title) => (
-            <Ranking
-              key={title}
-              header={title}
-              rankings={rankingsByCategory[title]}
-            />
+            <div key={title}>
+              <Ranking header={title} rankings={rankingsByCategory[title]} />
+              <Link
+                // todo: less sloppy key lookup
+                href={`/vote?category_id=${rankingsByCategory[title][0].category_id}`}
+              >
+                Vote
+              </Link>
+            </div>
           ))}
         </div>
       </div>
