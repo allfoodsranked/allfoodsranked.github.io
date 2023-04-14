@@ -2,17 +2,24 @@ import type { NextPage } from 'next';
 import { RequireAuth } from '../auth/with-auth';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../db/client';
-import Link from 'next/link';
-import { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 
 const Home: NextPage = () => {
   const foods = useQuery(['foods'], async () => {
-    return await supabase.from('foods').select('*');
+    const resp = await supabase.from('foods').select('*');
+    if (resp.error) {
+      alert(resp.error.message);
+    }
+    return resp;
   });
   const foodList = foods.data?.data ?? [];
 
   const catQuery = useQuery(['categories'], async () => {
-    return await supabase.from('categories').select('*');
+    const resp = await supabase.from('categories').select('*');
+    if (resp.error) {
+      alert(resp.error.message);
+    }
+    return resp;
   });
   const categories = catQuery.data?.data ?? [];
 
@@ -21,10 +28,14 @@ const Home: NextPage = () => {
   const membersQuery = useQuery(
     ['category-members', selectedCategoryId],
     async () => {
-      return await supabase
+      const resp = await supabase
         .from('category_foods')
         .select('food_id')
         .eq('category_id', selectedCategoryId);
+      if (resp.error) {
+        alert(resp.error.message);
+      }
+      return resp;
     }
   );
 
