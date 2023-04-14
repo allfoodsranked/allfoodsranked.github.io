@@ -8,10 +8,11 @@ import { supabase } from '../db/client';
 
 const VotePage: NextPage = () => {
   const { query } = useRouter();
-  const categoryId = query.category_id;
+  const categoryId = query.category_id as string;
   const { data: categoryDetails } = useQuery(
     ['category', categoryId],
     async () => {
+      if (!categoryId) return;
       const resp = await supabase
         .from('categories')
         .select('*')
@@ -44,7 +45,10 @@ const VotePage: NextPage = () => {
               ? `Which is the best ${categoryDetails?.data[0].name}?`
               : 'Which is better?'}
           </h1>
-          <Vote foods={voteQuery.data?.data ?? []} />
+          <Vote
+            foods={voteQuery.data?.data ?? []}
+            categoryId={Number(categoryId)}
+          />
         </div>
       </div>
     </RequireAuth>

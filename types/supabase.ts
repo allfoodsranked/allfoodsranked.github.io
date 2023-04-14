@@ -68,22 +68,25 @@ export interface Database {
       }
       votes: {
         Row: {
+          category_id: number | null
           created_at: string | null
-          food_id: number | null
+          food_id: number
           id: number
           user_id: string
           value: number
         }
         Insert: {
+          category_id?: number | null
           created_at?: string | null
-          food_id?: number | null
+          food_id: number
           id?: number
           user_id: string
           value?: number
         }
         Update: {
+          category_id?: number | null
           created_at?: string | null
-          food_id?: number | null
+          food_id?: number
           id?: number
           user_id?: string
           value?: number

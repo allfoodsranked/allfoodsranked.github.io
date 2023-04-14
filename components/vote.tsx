@@ -5,8 +5,10 @@ import { useSession } from '../auth/auth-context';
 
 export const Vote = ({
   foods,
+  categoryId,
 }: {
   foods: { id: number | null; name: string | null }[];
+  categoryId: number;
 }) => {
   const session = useSession();
   const { mutateAsync } = useMutation(
@@ -18,6 +20,7 @@ export const Vote = ({
           food_id: opts.id,
           user_id: session?.user.id!,
           value: opts.value,
+          category_id: categoryId,
         })
         .select();
     }
