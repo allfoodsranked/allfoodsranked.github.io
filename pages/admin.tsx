@@ -7,9 +7,7 @@ import { ChangeEventHandler, useState } from 'react';
 const Home: NextPage = () => {
   const foods = useQuery(['foods'], async () => {
     const resp = await supabase.from('foods').select('*');
-    if (resp.error) {
-      alert(resp.error.message);
-    }
+
     return resp;
   });
   const foodList = foods.data?.data ?? [];
@@ -28,13 +26,11 @@ const Home: NextPage = () => {
   const membersQuery = useQuery(
     ['category-members', selectedCategoryId],
     async () => {
+      if (!selectedCategoryId) return;
       const resp = await supabase
         .from('category_foods')
         .select('food_id')
         .eq('category_id', selectedCategoryId);
-      if (resp.error) {
-        alert(resp.error.message);
-      }
       return resp;
     }
   );
@@ -61,7 +57,10 @@ const Home: NextPage = () => {
             const name = form.get('name')?.toString();
             if (name && name.length > 0) {
               e.currentTarget.reset();
-              await supabase.from('foods').insert({ name });
+              const resp = await supabase.from('foods').insert({ name });
+              if (resp.error) {
+                alert(resp.error.message);
+              }
             }
           }}
         >
@@ -77,7 +76,10 @@ const Home: NextPage = () => {
             const name = form.get('name')?.toString();
             if (name && name.length > 0) {
               e.currentTarget.reset();
-              await supabase.from('categories').insert({ name });
+              const resp = await supabase.from('categories').insert({ name });
+              if (resp.error) {
+                alert(resp.error.message);
+              }
             }
           }}
         >
@@ -103,13 +105,17 @@ const Home: NextPage = () => {
             {newMembers.length > 0 && (
               <button
                 onClick={async () => {
-                  await supabase.from('category_tags').insert(
+                  const resp = await supabase.from('category_tags').insert(
                     newMembers.map((foodId) => ({
                       category_id: Number(selectedCategoryId),
                       food_id: foodId,
                     }))
                   );
-                  setMembers([]);
+                  if (resp.error) {
+                    alert(resp.error.message);
+                  } else {
+                    setMembers([]);
+                  }
                 }}
               >
                 Add {newMembers.length} to selected category
